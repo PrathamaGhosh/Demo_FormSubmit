@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Submission</title>
+</head>
+<body>
+   <form id="formsubmit">
+    Username: <input id="user" name="user" type="text" required><br><br>
+    Password: <input id="pass" name="pass" type="password" required><br><br>
+    <button onclick="submitButton(event)" type="button">Submit</button>
+   </form>
+</body>
+<script>
+    function submitButton(event) {
+        event.preventDefault();  // Prevent the default form submission
+
+        var form = document.getElementById('formsubmit');
+        var formData = new FormData(form);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'formSub.php', true);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                try {
+                    var response = JSON.parse(xhr.responseText);
+                    alert(response.message);
+                   
+                } catch (e) {
+                    alert('An error occurred: Invalid JSON response');
+                }
+            } else {
+                alert('An error occurred: ' + xhr.status);
+            }
+        };
+        // xhr.onerror = function() {
+        //     alert('An error occurred during the transaction');
+        // };
+
+       
+        if(xhr.send(formData)){
+            alert('data submitted');
+        }
+        else{
+            alert('data not submitted');
+        }
+       
+    }
+</script>
+</html>
+
+<!-- ajax Code here -->
+<!-- <html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Insert</title>
+</head>
+<body>
+    <label>Name</label>
+    <input type="text" id="name"> 
+    <label>Email</label>
+    <input type="text" id="email">
+    <button type="submit" id="button">SAVE</button>    
+    <script>
+        $(document).ready(function(){
+            $("#button").click(function(){
+                var name=$("#name").val();
+                var email=$("#email").val();
+              
+                $.ajax({
+                    url:'formSub.php',
+                    method:'POST',
+                    data:{
+                        name:name,
+                        email:email
+                    },
+                   success:function(data){
+                       alert(data);
+                   }
+                });
+            });
+        });
+    </script>
+</body>
+</html> -->
